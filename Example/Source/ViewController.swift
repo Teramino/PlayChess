@@ -1,0 +1,70 @@
+//
+//  ViewController.swift
+//  FDChessboardView
+//
+//  Created by Joel Bateman on 5/1/16.
+//  Copyright © 2016 Joel Bateman. All rights reserved.
+//
+
+import UIKit
+import FDChessboardView
+
+class ViewController: UIViewController {
+    @IBOutlet var chessboard: FDChessboardView!
+    
+    var piecesByIndex = [Int : FDChessboardPiece]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Startup positions for new game
+        let position: String = "RNBQKBNRPPPPPPPP................................pppppppprnbqkbnr"
+        
+        // Loads up pieces onto chess board
+        for (index, letter) in position.characters.enumerate() {
+            switch letter {
+            case "K":
+                piecesByIndex[index] = .WhiteKing
+            case "k":
+                piecesByIndex[index] = .BlackKing
+            case "Q":
+                piecesByIndex[index] = .WhiteQueen
+            case "q":
+                piecesByIndex[index] = .BlackQueen
+            case "R":
+                piecesByIndex[index] = .WhiteRook
+            case "r":
+                piecesByIndex[index] = .BlackRook
+            case "B":
+                piecesByIndex[index] = .WhiteBishop
+            case "b":
+                piecesByIndex[index] = .BlackBishop
+            case "N":
+                piecesByIndex[index] = .WhiteKnight
+            case "n":
+                piecesByIndex[index] = .BlackKnight
+            case "P":
+                piecesByIndex[index] = .WhitePawn
+            case "p":
+                piecesByIndex[index] = .BlackPawn
+            default:
+                break
+            }
+        }
+        self.chessboard.dataSource = self
+    }
+}
+
+extension ViewController: FDChessboardViewDataSource {
+    func chessboardView(board: FDChessboardView, pieceForSquare square: FDChessboardSquare) -> FDChessboardPiece? {
+        return piecesByIndex[square.index]
+    }
+    
+    func chessboardViewLastMove(board: FDChessboardView) -> (from: FDChessboardSquare, to: FDChessboardSquare)? {
+        return nil
+    }
+    
+    func chessboardViewPremove(board: FDChessboardView) -> (from: FDChessboardSquare, to: FDChessboardSquare)? {
+        return nil
+    }
+}
